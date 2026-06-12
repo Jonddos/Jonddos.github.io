@@ -11,10 +11,10 @@ import Footer from './components/Footer'
 
 export default function App() {
   return (
-    <div className="relative min-h-screen overflow-x-hidden" style={{ background: '#030712' }}>
+    <div className="no-flicker relative min-h-screen overflow-x-hidden" style={{ background: '#030712' }}>
       <div className="relative">
         <Navbar />
-        <main>
+        <main style={{ background: '#030712' }}>
           <Hero />
           <About />
           <Technologies />

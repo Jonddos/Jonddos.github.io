@@ -1,7 +1,9 @@
 import { motion } from 'framer-motion'
 import { services } from '../data/services'
+import { useIsMobile } from '../hooks/useIsMobile'
 
 export default function Services() {
+  const isMobile = useIsMobile()
   return (
     <section id="servicios" className="relative py-24 lg:py-32">
       <div
@@ -44,15 +46,20 @@ export default function Services() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
           {services.map((service, i) => {
             const Icon = service.icon
+            const cardMotion = isMobile
+              ? { initial: false as const, animate: { opacity: 1, y: 0 } }
+              : {
+                  initial: { opacity: 0, y: 28 },
+                  whileInView: { opacity: 1, y: 0 },
+                  viewport: { once: true, amount: 0.15 },
+                  transition: { delay: Math.min(i * 0.05, 0.25), duration: 0.45, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] },
+                  whileHover: { y: -3 },
+                }
             return (
               <motion.div
                 key={service.title}
-                initial={{ opacity: 0, y: 28 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: '-30px' }}
-                transition={{ delay: i * 0.06, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                whileHover={{ y: -3 }}
-                className="group relative flex flex-col gap-4 p-5 rounded-2xl transition-all duration-300 cursor-default"
+                {...cardMotion}
+                className="group relative flex flex-col gap-4 p-5 rounded-2xl cursor-default mobile-stable-card md:transition-colors md:duration-300"
                 style={{
                   background: 'linear-gradient(145deg, #0d1526 0%, #080d1a 100%)',
                   border: '1px solid rgba(255,255,255,0.05)',
@@ -61,11 +68,11 @@ export default function Services() {
               >
                 {/* Hover border glow */}
                 <div
-                  className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
+                  className="absolute inset-0 rounded-2xl opacity-0 md:group-hover:opacity-100 md:transition-opacity md:duration-300 pointer-events-none"
                   style={{ boxShadow: 'inset 0 0 0 1px rgba(59,130,246,0.2)' }}
                 />
 
-                <div className="w-10 h-10 rounded-xl bg-blue-500/10 border border-blue-500/15 flex items-center justify-center group-hover:bg-blue-500/15 transition-colors duration-300">
+                <div className="w-10 h-10 rounded-xl bg-blue-500/10 border border-blue-500/15 flex items-center justify-center md:group-hover:bg-blue-500/15 md:transition-colors md:duration-300">
                   <Icon size={18} className="text-blue-400" />
                 </div>
 

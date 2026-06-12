@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
 import { Github, ExternalLink, AlertCircle, CheckCircle2, Lock, Building2, ShoppingCart, Download } from 'lucide-react'
 import type { Project } from '../data/projects'
+import { useIsMobile } from '../hooks/useIsMobile'
 
 const typeColorMap: Record<string, string> = {
   purple: 'text-purple-400 bg-purple-500/10 border-purple-500/25',
@@ -29,15 +30,29 @@ function PrivateBadge({ isCompany }: { isCompany?: boolean }) {
 export default function ProjectCard({ project, index, featured = false }: Props) {
   const badgeClass = typeColorMap[project.typeColor] ?? typeColorMap.blue
   const isConfidential = project.isPrivate || project.isCompanyProject
+  const isMobile = useIsMobile()
+
+  const motionProps = isMobile
+    ? {
+        initial: false as const,
+        animate: { opacity: 1, y: 0 },
+      }
+    : {
+        initial: { opacity: 0, y: 32 },
+        whileInView: { opacity: 1, y: 0 },
+        viewport: { once: true, amount: 0.15 },
+        transition: {
+          delay: Math.min(index * 0.05, 0.25),
+          duration: 0.45,
+          ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
+        },
+        whileHover: { y: -5 },
+      }
 
   return (
     <motion.article
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-50px' }}
-      transition={{ delay: index * 0.07, duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-      whileHover={{ y: -5 }}
-      className="group relative flex flex-col overflow-hidden transition-all duration-300"
+      {...motionProps}
+      className="group relative flex flex-col overflow-hidden transform-gpu mobile-stable-card md:transition-colors md:duration-300"
       style={{
         background: 'linear-gradient(145deg, #0d1526 0%, #080d1a 100%)',
         border: '1px solid rgba(255,255,255,0.06)',
@@ -47,7 +62,7 @@ export default function ProjectCard({ project, index, featured = false }: Props)
     >
       {/* Top color bar */}
       <div
-        className="h-[2px] w-full transition-opacity duration-300 opacity-50 group-hover:opacity-100"
+        className="h-[2px] w-full opacity-50 md:transition-opacity md:duration-300 md:group-hover:opacity-100"
         style={{ background: `linear-gradient(90deg, ${project.accentColor}, transparent 70%)` }}
       />
 
@@ -67,7 +82,7 @@ export default function ProjectCard({ project, index, featured = false }: Props)
           }}
         />
         <div
-          className="absolute rounded-full blur-3xl opacity-20 group-hover:opacity-30 transition-opacity duration-500"
+          className="absolute rounded-full blur-2xl md:blur-3xl opacity-20 md:group-hover:opacity-30 md:transition-opacity md:duration-500"
           style={{
             width: '120px', height: '120px',
             background: project.accentColor,
@@ -76,7 +91,7 @@ export default function ProjectCard({ project, index, featured = false }: Props)
           }}
         />
         <div
-          className="relative z-10 flex items-center justify-center font-black font-mono transition-transform duration-300 group-hover:scale-105"
+          className="relative z-10 flex items-center justify-center font-black font-mono md:transition-transform md:duration-300 md:group-hover:scale-105"
           style={{
             width: featured ? '72px' : '58px',
             height: featured ? '72px' : '58px',

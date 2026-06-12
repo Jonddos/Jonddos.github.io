@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
 import { Terminal, Zap, Shield } from 'lucide-react'
+import { useIsMobile } from '../hooks/useIsMobile'
 
 const traits = [
   { icon: Terminal, label: 'Enfoque en producto', desc: 'No solo código — pienso en el problema de negocio.' },
@@ -8,6 +9,7 @@ const traits = [
 ]
 
 export default function About() {
+  const isMobile = useIsMobile()
   return (
     <section id="sobre-mi" className="relative py-24 lg:py-32">
       <div
@@ -128,14 +130,19 @@ export default function About() {
             <div className="mt-3 grid grid-cols-1 sm:grid-cols-3 gap-3">
               {traits.map((trait, i) => {
                 const Icon = trait.icon
+                const traitMotion = isMobile
+                  ? { initial: false as const, animate: { opacity: 1, y: 0 } }
+                  : {
+                      initial: { opacity: 0, y: 16 },
+                      whileInView: { opacity: 1, y: 0 },
+                      viewport: { once: true, amount: 0.15 },
+                      transition: { delay: 0.3 + i * 0.1, duration: 0.45 },
+                    }
                 return (
                   <motion.div
                     key={trait.label}
-                    initial={{ opacity: 0, y: 16 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: 0.3 + i * 0.1, duration: 0.45 }}
-                    className="flex items-center gap-3 px-4 py-3 rounded-xl"
+                    {...traitMotion}
+                    className="flex items-center gap-3 px-4 py-3 rounded-xl mobile-stable-card"
                     style={{
                       background: 'linear-gradient(145deg, #0d1526 0%, #080d1a 100%)',
                       border: '1px solid rgba(255,255,255,0.05)',

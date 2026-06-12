@@ -1,7 +1,9 @@
 import { motion } from 'framer-motion'
 import { technologies } from '../data/technologies'
+import { useIsMobile } from '../hooks/useIsMobile'
 
 export default function Technologies() {
+  const isMobile = useIsMobile()
   return (
     <section id="tecnologias" className="relative py-24 lg:py-32">
       <div
@@ -27,14 +29,20 @@ export default function Technologies() {
         </motion.div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {technologies.map((group, i) => (
+          {technologies.map((group, i) => {
+            const groupMotion = isMobile
+              ? { initial: false as const, animate: { opacity: 1, y: 0 } }
+              : {
+                  initial: { opacity: 0, y: 30 },
+                  whileInView: { opacity: 1, y: 0 },
+                  viewport: { once: true, amount: 0.15 },
+                  transition: { delay: i * 0.08, duration: 0.5 },
+                }
+            return (
             <motion.div
               key={group.category}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-40px' }}
-              transition={{ delay: i * 0.1, duration: 0.5 }}
-              className="card-dark p-5 transition-all duration-300 hover:border-blue-500/20"
+              {...groupMotion}
+              className="card-dark p-5 mobile-stable-card md:transition-colors md:duration-300 md:hover:border-blue-500/20"
             >
               <div className="flex items-center gap-2 mb-4">
                 <span className="text-xl">{group.emoji}</span>
@@ -52,7 +60,8 @@ export default function Technologies() {
                 ))}
               </div>
             </motion.div>
-          ))}
+            )
+          })}
         </div>
       </div>
     </section>
