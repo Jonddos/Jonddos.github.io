@@ -14,7 +14,7 @@ const fadeUp = {
 
 export default function Hero() {
   return (
-    <section className="relative min-h-screen flex flex-col justify-center overflow-hidden">
+    <section id="inicio" className="relative min-h-screen flex flex-col justify-center overflow-hidden">
       {/* Grid background */}
       <div className="absolute inset-0 grid-bg opacity-50" />
 

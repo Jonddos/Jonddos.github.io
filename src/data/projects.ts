@@ -7,10 +7,14 @@ export interface Project {
   problem: string
   result: string
   tech: string[]
-  github: string | null
-  demo: string | null
+  githubUrl?: string | null
+  demoUrl?: string | null
+  companyUrl?: string | null
+  productUrl?: string | null
   accentColor: string
-  confidential?: boolean
+  isPrivate?: boolean
+  isCompanyProject?: boolean
+  isInstallable?: boolean
 }
 
 export const projects: Project[] = [
@@ -23,10 +27,10 @@ export const projects: Project[] = [
     problem: 'Los procesos de selección eran lentos, manuales y casi imposibles de escalar sin perder calidad en la evaluación.',
     result: 'Entrevistas estructuradas, analizadas en tiempo real y con trazabilidad completa para equipos de RRHH.',
     tech: ['React', 'Next.js', 'FastAPI', 'Spring Boot', 'Kafka'],
-    github: null,
-    demo: null,
+    githubUrl: null,
+    demoUrl: null,
     accentColor: '#8b5cf6',
-    confidential: true,
+    isPrivate: true,
   },
   {
     id: 'ocr-registraduria',
@@ -37,10 +41,11 @@ export const projects: Project[] = [
     problem: 'La extracción de datos desde documentos de la Registraduría era completamente manual, lenta y propensa a errores.',
     result: 'Lectura automatizada y trazabilidad completa de información para revisión ciudadana en tiempo real.',
     tech: ['Python', 'OCR', 'FastAPI', 'PostgreSQL'],
-    github: null,
-    demo: null,
+    githubUrl: null,
+    demoUrl: null,
     accentColor: '#10b981',
-    confidential: true,
+    isPrivate: true,
+    isCompanyProject: true,
   },
   {
     id: 'smiofi',
@@ -51,38 +56,26 @@ export const projects: Project[] = [
     problem: 'Los despachos de abogados manejaban expedientes en papel y hojas de cálculo, sin trazabilidad ni acceso rápido a la información.',
     result: 'Plataforma centralizada para gestionar documentos legales con búsqueda, clasificación y seguimiento de casos.',
     tech: ['React', 'FastAPI', 'PostgreSQL', 'REST APIs'],
-    github: null,
-    demo: null,
+    githubUrl: null,
+    demoUrl: null,
+    companyUrl: 'https://smiofi.com/',
     accentColor: '#3b82f6',
-    confidential: true,
+    isCompanyProject: true,
   },
   {
-    id: 'portview',
-    title: 'portview',
-    type: 'Open Source / Dev Tool',
-    typeColor: 'orange',
-    description: 'Herramienta open source para visualizar y presentar proyectos de desarrollo de forma organizada y profesional.',
-    problem: 'Los desarrolladores no tenían una forma clara y profesional de mostrar sus proyectos más allá de GitHub.',
-    result: 'Visualización organizada de proyectos con un diseño limpio, navegable y fácil de personalizar.',
-    tech: ['React', 'Vite', 'GitHub API', 'TypeScript'],
-    github: 'https://github.com/Jonddos/portview',
-    demo: '#',
-    accentColor: '#f97316',
-    confidential: false,
-  },
-  {
-    id: 'mundialitycs',
-    title: 'Mundialitycs',
-    type: 'Data / Analytics',
+    id: 'mundialytics',
+    title: 'Mundialytics',
+    type: 'SaaS / Analítica Deportiva',
     typeColor: 'cyan',
-    description: 'Plataforma de analítica deportiva enfocada en estadísticas y visualización de datos de torneos de fútbol internacionales.',
-    problem: 'No existía una herramienta accesible y visual para explorar y comparar estadísticas de mundiales de forma interactiva.',
-    result: 'Dashboard interactivo con estadísticas históricas, comparativas de selecciones y visualizaciones de rendimiento.',
-    tech: ['React', 'TypeScript', 'Recharts', 'REST APIs'],
-    github: 'https://github.com/Jonddos/mundialitycs',
-    demo: '#',
+    description: 'Dashboard y template de predicción para análisis de torneos de fútbol, diseñado como producto digital vendible con visualización de datos, simulación y presentación profesional.',
+    problem: 'Los análisis deportivos suelen estar dispersos en hojas de cálculo o herramientas poco visuales.',
+    result: 'Producto digital listo para mostrar predicciones, métricas y escenarios de forma clara, visual y comercial.',
+    tech: ['Next.js', 'React', 'TypeScript', 'Tailwind CSS', 'Vercel', 'Data Visualization'],
+    githubUrl: null,
+    demoUrl: 'https://mundialytics.vercel.app/',
+    productUrl: 'https://5234138886916.gumroad.com/l/world-cup-prediction-template',
     accentColor: '#06b6d4',
-    confidential: false,
+    isPrivate: false,
   },
   {
     id: 'happener',
@@ -93,9 +86,23 @@ export const projects: Project[] = [
     problem: 'La gestión de eventos era completamente manual, sin herramientas integradas para administración end-to-end.',
     result: 'Plataforma lista para organizar, publicar y administrar eventos con flujos automatizados de gestión.',
     tech: ['React', 'Node.js', 'PostgreSQL', 'Stripe'],
-    github: '#',
-    demo: '#',
+    githubUrl: null,
+    demoUrl: null,
     accentColor: '#ec4899',
-    confidential: false,
+    isPrivate: true,
+  },
+  {
+    id: 'portview',
+    title: 'portview',
+    type: 'Open Source / Dev Tool',
+    typeColor: 'orange',
+    description: 'Herramienta open source para visualizar y organizar proyectos de desarrollo de forma más clara, pensada para mostrar repositorios o portafolios técnicos.',
+    problem: 'Los desarrolladores no tenían una forma clara y profesional de mostrar sus proyectos más allá de GitHub.',
+    result: 'Visualización organizada de proyectos con un diseño limpio, navegable y fácil de personalizar.',
+    tech: ['React', 'Vite', 'GitHub API', 'TypeScript'],
+    githubUrl: 'https://github.com/Jonddos/portview',
+    demoUrl: null,
+    accentColor: '#f97316',
+    isInstallable: true,
   },
 ]

@@ -9,11 +9,24 @@
 
   html {
     scroll-behavior: smooth;
+    background: #030712;
   }
 
   body {
-    @apply bg-dark-900 text-gray-100 font-sans antialiased;
+    @apply text-gray-100 font-sans antialiased;
     background-color: #030712;
+    background-image:
+      linear-gradient(rgba(59, 130, 246, 0.018) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(59, 130, 246, 0.018) 1px, transparent 1px);
+    background-size: 60px 60px;
+    overflow-x: hidden;
+    margin: 0;
+  }
+
+  #root {
+    min-height: 100vh;
+    background: #030712;
+    isolation: isolate;
   }
 
   ::selection {
@@ -103,6 +116,14 @@
 @layer utilities {
   .no-scrollbar::-webkit-scrollbar {
     display: none;
+  }
+
+  /* Prevents GPU compositing flicker on fixed/sticky/animated elements */
+  .no-flicker {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    will-change: transform;
   }
 
   .bg-noise {

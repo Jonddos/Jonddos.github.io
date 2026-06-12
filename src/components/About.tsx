@@ -42,7 +42,7 @@ export default function About() {
                 Trabajemos juntos
               </a>
               <a
-                href="https://linkedin.com/in/jonddos"
+                href="https://www.linkedin.com/in/jonathan-ortiz-ruiz-359a67204/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn-secondary text-sm"

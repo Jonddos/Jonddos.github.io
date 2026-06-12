@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { Github, ExternalLink, AlertCircle, CheckCircle2, Lock } from 'lucide-react'
+import { Github, ExternalLink, AlertCircle, CheckCircle2, Lock, Building2, ShoppingCart, Download } from 'lucide-react'
 import type { Project } from '../data/projects'
 
 const typeColorMap: Record<string, string> = {
@@ -17,8 +17,18 @@ interface Props {
   featured?: boolean
 }
 
+function PrivateBadge({ isCompany }: { isCompany?: boolean }) {
+  return (
+    <div className="flex items-center gap-1 font-mono text-[10px] px-2 py-0.5 rounded-full border border-white/10 bg-white/5 text-gray-500">
+      <Lock size={9} />
+      {isCompany ? 'Empresa / privado' : 'Proyecto privado'}
+    </div>
+  )
+}
+
 export default function ProjectCard({ project, index, featured = false }: Props) {
   const badgeClass = typeColorMap[project.typeColor] ?? typeColorMap.blue
+  const isConfidential = project.isPrivate || project.isCompanyProject
 
   return (
     <motion.article
@@ -88,11 +98,18 @@ export default function ProjectCard({ project, index, featured = false }: Props)
           <span className="w-2 h-2 rounded-full" style={{ background: `${project.accentColor}50` }} />
         </div>
 
-        {/* Confidential badge OR Featured badge */}
-        {project.confidential ? (
-          <div className="absolute top-3 right-3 flex items-center gap-1 font-mono text-[10px] px-2 py-0.5 rounded-full border border-white/10 bg-white/5 text-gray-500">
-            <Lock size={9} />
-            Confidencial
+        {/* Status badge */}
+        {isConfidential ? (
+          <div className="absolute top-3 right-3">
+            <PrivateBadge isCompany={project.isCompanyProject} />
+          </div>
+        ) : project.isInstallable ? (
+          <div
+            className="absolute top-3 right-3 font-mono text-[10px] px-2 py-0.5 rounded-full border flex items-center gap-1"
+            style={{ color: project.accentColor, borderColor: `${project.accentColor}40`, background: `${project.accentColor}10` }}
+          >
+            <Download size={8} />
+            Open Source
           </div>
         ) : featured ? (
           <div
@@ -146,33 +163,53 @@ export default function ProjectCard({ project, index, featured = false }: Props)
             ))}
           </div>
 
-          {/* Links — only shown if not confidential */}
-          {!project.confidential && (
-            <div className="flex gap-3 shrink-0">
-              {project.github && project.github !== '#' && (
-                <a
-                  href={project.github}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-gray-600 hover:text-white transition-colors"
-                  aria-label={`GitHub de ${project.title}`}
-                >
-                  <Github size={14} />
-                </a>
-              )}
-              {project.demo && project.demo !== '#' && (
-                <a
-                  href={project.demo}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-gray-600 hover:text-blue-400 transition-colors"
-                  aria-label={`Demo de ${project.title}`}
-                >
-                  <ExternalLink size={14} />
-                </a>
-              )}
-            </div>
-          )}
+          {/* Links — only shown when URLs exist */}
+          <div className="flex gap-3 shrink-0">
+            {project.githubUrl && (
+              <a
+                href={project.githubUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-600 hover:text-white transition-colors"
+                aria-label={`Repositorio GitHub de ${project.title}`}
+              >
+                <Github size={14} />
+              </a>
+            )}
+            {project.demoUrl && (
+              <a
+                href={project.demoUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-600 hover:text-blue-400 transition-colors"
+                aria-label={`Ver demo de ${project.title}`}
+              >
+                <ExternalLink size={14} />
+              </a>
+            )}
+            {project.companyUrl && (
+              <a
+                href={project.companyUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-600 hover:text-blue-400 transition-colors"
+                aria-label={`Sitio de la empresa — ${project.title}`}
+              >
+                <Building2 size={14} />
+              </a>
+            )}
+            {project.productUrl && (
+              <a
+                href={project.productUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-600 hover:text-cyan-400 transition-colors"
+                aria-label={`Ver producto de ${project.title}`}
+              >
+                <ShoppingCart size={14} />
+              </a>
+            )}
+          </div>
         </div>
       </div>
     </motion.article>

@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { Mail, Linkedin, ArrowRight } from 'lucide-react'
+import { Mail, Linkedin, MessageCircle, ArrowRight } from 'lucide-react'
 
 export default function Contact() {
   return (
@@ -38,10 +38,11 @@ export default function Contact() {
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <motion.a
-              href="mailto:jonddos@gmail.com"
+              href="mailto:jonddos@gmail.com?subject=Proyecto%20de%20software&body=Hola%20Jonathan%2C%20quiero%20hablar%20sobre%20un%20proyecto."
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               className="btn-primary text-base px-8 py-4"
+              aria-label="Enviar correo a Jonathan Ortiz"
             >
               <Mail size={17} />
               Escríbeme un correo
@@ -49,15 +50,29 @@ export default function Contact() {
             </motion.a>
 
             <motion.a
-              href="https://linkedin.com/in/jonddos"
+              href="https://www.linkedin.com/in/jonathan-ortiz-ruiz-359a67204/"
               target="_blank"
               rel="noopener noreferrer"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               className="btn-secondary text-base px-8 py-4"
+              aria-label="Perfil de LinkedIn de Jonathan Ortiz"
             >
               <Linkedin size={17} />
               LinkedIn
+            </motion.a>
+
+            <motion.a
+              href="https://wa.me/573108034711"
+              target="_blank"
+              rel="noopener noreferrer"
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              className="btn-secondary text-base px-8 py-4"
+              aria-label="Contactar por WhatsApp"
+            >
+              <MessageCircle size={17} />
+              WhatsApp
             </motion.a>
           </div>
 

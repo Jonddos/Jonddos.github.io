@@ -11,11 +11,8 @@ import Footer from './components/Footer'
 
 export default function App() {
   return (
-    <div className="relative min-h-screen bg-dark-900 overflow-x-hidden">
-      {/* Persistent subtle grid */}
-      <div className="fixed inset-0 grid-bg pointer-events-none opacity-40 z-0" />
-
-      <div className="relative z-10">
+    <div className="relative min-h-screen overflow-x-hidden" style={{ background: '#030712' }}>
+      <div className="relative">
         <Navbar />
         <main>
           <Hero />
