@@ -136,6 +136,13 @@
   }
 }
 
+.mobile-stable-card {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transform: translateZ(0);
+  contain: paint;
+}
+
 @media (hover: none) and (pointer: coarse) {
   .mobile-no-motion {
     transform: none !important;
@@ -144,10 +151,10 @@
   }
 
   .mobile-stable-card {
-    will-change: auto;
+    will-change: transform, opacity;
+  }
+
+  .mobile-stable-card:hover {
     transform: translateZ(0);
-    backface-visibility: hidden;
-    -webkit-backface-visibility: hidden;
-    contain: paint;
   }
 }

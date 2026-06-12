@@ -47,7 +47,12 @@ export default function Services() {
           {services.map((service, i) => {
             const Icon = service.icon
             const cardMotion = isMobile
-              ? { initial: false as const, animate: { opacity: 1, y: 0 } }
+              ? {
+                  initial: { opacity: 0, y: 16 },
+                  whileInView: { opacity: 1, y: 0 },
+                  viewport: { once: true, amount: 0.2 },
+                  transition: { duration: 0.35, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] },
+                }
               : {
                   initial: { opacity: 0, y: 28 },
                   whileInView: { opacity: 1, y: 0 },
