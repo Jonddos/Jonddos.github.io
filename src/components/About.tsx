@@ -1,5 +1,6 @@
-import { Linkedin, Shield, Terminal, Zap } from 'lucide-react'
+import { Shield, Terminal, Zap } from 'lucide-react'
 import { site } from '../data/site'
+import { LinkedinMark } from './ui/BrandMarks'
 import { ButtonLink } from './ui/Button'
 import { Container } from './ui/Container'
 import { IconTile } from './ui/IconTile'
@@ -70,7 +71,7 @@ export default function About() {
           <div className="mt-10 flex flex-wrap gap-3">
             <ButtonLink href="#contacto">Trabajemos juntos</ButtonLink>
             <ButtonLink href={site.social.linkedin} external variant="secondary">
-              <Linkedin aria-hidden="true" className="size-4" />
+              <LinkedinMark className="size-4" />
               LinkedIn
             </ButtonLink>
           </div>

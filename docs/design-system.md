@@ -71,6 +71,7 @@ Fuentes: **Inter Variable** (UI) y **JetBrains Mono Variable** (código y etique
 | `IconTile` | `icon`, `size`, `tone` | Icono decorativo (`aria-hidden`) |
 | `TerminalWindow` | `title` | Superficie de código siempre oscura |
 | `LogoMark`, `UtiqAiMark` | `className` | Monogramas SVG «J» y «U» |
+| `GithubMark`, `LinkedinMark` | `className` | Logotipos oficiales sin modificar, en `currentColor` y decorativos (`aria-hidden`): lucide 1.x no incluye marcas |
 | `ThemeToggle`, `ThemeSwitcher` | — | Alternador (`aria-pressed`) y selector Sistema/Claro/Oscuro (radios nativos) |
 | `SkipLink`, `ExternalLink` | — | Salto al contenido; enlace externo seguro y anunciado |
 

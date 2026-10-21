@@ -1,8 +1,9 @@
-import { CircleAlert, CircleCheck, ExternalLink, Github, Lock } from 'lucide-react'
+import { CircleAlert, CircleCheck, ExternalLink, Lock } from 'lucide-react'
 import type { Project } from '../data/projects'
 import { cn } from '../lib/cn'
 import ProjectPreview from './ProjectPreview'
 import { Badge } from './ui/Badge'
+import { GithubMark } from './ui/BrandMarks'
 import { ButtonLink } from './ui/Button'
 import { Card } from './ui/Card'
 
@@ -73,7 +74,7 @@ export default function ProjectCard({ project, featured = false }: Props) {
             <div className="flex gap-2">
               {github && (
                 <ButtonLink href={github} external variant="secondary" size="sm">
-                  <Github aria-hidden="true" className="size-4" />
+                  <GithubMark className="size-4" />
                   Código
                 </ButtonLink>
               )}

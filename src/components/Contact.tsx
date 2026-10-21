@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
-import { ArrowRight, Check, Copy, Github, Linkedin, Mail } from 'lucide-react'
+import { ArrowRight, Check, Copy, Mail } from 'lucide-react'
 import { site } from '../data/site'
+import { GithubMark, LinkedinMark } from './ui/BrandMarks'
 import { Button, ButtonLink } from './ui/Button'
 import { Container } from './ui/Container'
 import { Reveal } from './ui/Reveal'
@@ -56,7 +57,7 @@ export default function Contact() {
               <ArrowRight aria-hidden="true" className="size-4" />
             </ButtonLink>
             <ButtonLink href={site.social.linkedin} external variant="secondary" size="lg">
-              <Linkedin aria-hidden="true" className="size-4.5" />
+              <LinkedinMark className="size-4.5" />
               LinkedIn
             </ButtonLink>
           </div>
@@ -75,7 +76,7 @@ export default function Contact() {
               ·
             </span>
             <ButtonLink href={site.social.github} external variant="ghost" size="sm">
-              <Github aria-hidden="true" className="size-4" />
+              <GithubMark className="size-4" />
               GitHub
             </ButtonLink>
           </div>
