@@ -1,95 +1,80 @@
-import { motion } from 'framer-motion'
+import { m } from 'framer-motion'
+import { ArrowRight, Check } from 'lucide-react'
 import { services } from '../data/services'
+import { cn } from '../lib/cn'
+import { fadeUp, revealViewport, stagger } from '../lib/motion'
+import { ButtonLink } from './ui/Button'
+import { Card } from './ui/Card'
+import { Container } from './ui/Container'
+import { IconTile } from './ui/IconTile'
+import { Section, SectionHeader } from './ui/Section'
+
+// En tablet (2 columnas) la última tarjeta impar ocupa la fila completa
+const lastSpansTablet = services.length % 2 === 1
 
 export default function Services() {
   return (
-    <section id="servicios" className="relative py-24 lg:py-32">
-      <div
-        className="absolute top-0 inset-x-0 h-px"
-        style={{ background: 'linear-gradient(90deg, transparent, rgba(59,130,246,0.25), transparent)' }}
-      />
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-14">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.55 }}
-          >
-            <p className="section-label">// servicios</p>
-            <h2 className="text-4xl md:text-5xl font-black text-white mb-4">
-              Qué puedo construir{' '}
-              <span className="bg-clip-text text-transparent" style={{ backgroundImage: 'linear-gradient(135deg, #60a5fa, #818cf8)' }}>
-                para tu negocio
-              </span>
-            </h2>
-            <p className="text-gray-500 max-w-lg leading-relaxed text-sm">
-              Soluciones prácticas para automatizar procesos, lanzar productos y convertir ideas en software real.
-            </p>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.2 }}
-          >
-            <a href="#contacto" className="btn-primary text-sm whitespace-nowrap">
+    <Section id="servicios" divider>
+      <Container>
+        <SectionHeader
+          id="servicios"
+          eyebrow="servicios"
+          title="Qué puedo construir"
+          highlight="para tu negocio"
+          description="Soluciones prácticas para automatizar procesos, lanzar productos y convertir ideas en software real."
+          action={
+            <ButtonLink href="#contacto" className="self-start lg:self-auto">
               Hablemos de tu proyecto
-            </a>
-          </motion.div>
-        </div>
+              <ArrowRight aria-hidden="true" className="size-4" />
+            </ButtonLink>
+          }
+        />
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        {/* Bento 3×3: las destacadas ocupan 2 columnas y `grid-flow-dense` rellena los huecos */}
+        <ul className="grid grid-flow-dense gap-4 md:grid-cols-2 lg:grid-cols-3">
           {services.map((service, i) => {
-            const Icon = service.icon
+            const last = i === services.length - 1
             return (
-              <motion.div
+              <m.li
                 key={service.title}
-                initial={{ opacity: 0, y: 28 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: '-30px' }}
-                transition={{ delay: i * 0.06, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                whileHover={{ y: -3 }}
-                className="group relative flex flex-col gap-4 p-5 rounded-2xl transition-all duration-300 cursor-default"
-                style={{
-                  background: 'linear-gradient(145deg, #0d1526 0%, #080d1a 100%)',
-                  border: '1px solid rgba(255,255,255,0.05)',
-                  boxShadow: '0 2px 16px rgba(0,0,0,0.4)',
-                }}
+                variants={fadeUp}
+                initial="hidden"
+                whileInView="visible"
+                viewport={revealViewport}
+                custom={(i % 3) * stagger}
+                className={cn(
+                  service.featured && 'lg:col-span-2',
+                  last && lastSpansTablet && 'md:col-span-2 lg:col-span-1',
+                )}
               >
-                {/* Hover border glow */}
-                <div
-                  className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
-                  style={{ boxShadow: 'inset 0 0 0 1px rgba(59,130,246,0.2)' }}
-                />
-
-                <div className="w-10 h-10 rounded-xl bg-blue-500/10 border border-blue-500/15 flex items-center justify-center group-hover:bg-blue-500/15 transition-colors duration-300">
-                  <Icon size={18} className="text-blue-400" />
-                </div>
-
-                <div>
-                  <h3 className="font-semibold text-white text-sm mb-1.5">{service.title}</h3>
-                  <p className="text-xs text-gray-500 leading-relaxed">{service.description}</p>
-                </div>
-
-                <ul className="space-y-1.5 mt-auto">
-                  {service.features.map((f) => (
-                    <li key={f} className="flex items-center gap-2 text-xs text-gray-600">
-                      <span
-                        className="w-1 h-1 rounded-full shrink-0"
-                        style={{ background: 'rgba(59,130,246,0.5)' }}
-                      />
-                      {f}
-                    </li>
-                  ))}
-                </ul>
-              </motion.div>
+                <Card
+                  spotlight
+                  className={cn(
+                    'flex h-full flex-col gap-5 p-6',
+                    service.featured && 'bg-linear-to-br from-accent-subtle/70 via-surface to-surface lg:p-8',
+                  )}
+                >
+                  <IconTile icon={service.icon} size={service.featured ? 'lg' : 'md'} />
+                  <div>
+                    <h3 className={cn('text-fg', service.featured ? 'text-title-lg' : 'text-title')}>
+                      {service.title}
+                    </h3>
+                    <p className="mt-2 max-w-xl text-body-sm text-fg-muted">{service.description}</p>
+                  </div>
+                  <ul className={cn('mt-auto grid gap-2', service.featured && 'sm:grid-cols-3')}>
+                    {service.features.map((feature) => (
+                      <li key={feature} className="flex items-start gap-2 text-body-sm text-fg-subtle">
+                        <Check aria-hidden="true" className="mt-0.5 size-4 shrink-0 text-accent-text" />
+                        {feature}
+                      </li>
+                    ))}
+                  </ul>
+                </Card>
+              </m.li>
             )
           })}
-        </div>
-      </div>
-    </section>
+        </ul>
+      </Container>
+    </Section>
   )
 }

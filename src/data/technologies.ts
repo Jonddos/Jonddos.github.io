@@ -1,28 +1,31 @@
+import { BrainCircuit, Cloud, LayoutTemplate, Server } from 'lucide-react'
+import type { LucideIcon } from 'lucide-react'
+
 export interface TechGroup {
   category: string
-  emoji: string
+  icon: LucideIcon
   items: string[]
 }
 
 export const technologies: TechGroup[] = [
   {
     category: 'Frontend',
-    emoji: '⚡',
+    icon: LayoutTemplate,
     items: ['React', 'Next.js', 'TypeScript', 'Tailwind CSS', 'Vite', 'Framer Motion'],
   },
   {
     category: 'Backend',
-    emoji: '⚙️',
+    icon: Server,
     items: ['FastAPI', 'Node.js', 'Spring Boot', 'Python', 'PostgreSQL', 'Redis'],
   },
   {
     category: 'Datos & Cloud',
-    emoji: '☁️',
+    icon: Cloud,
     items: ['Docker', 'GitHub Actions', 'Kafka', 'REST APIs', 'Webhooks', 'Vercel'],
   },
   {
     category: 'IA & Automatización',
-    emoji: '🤖',
+    icon: BrainCircuit,
     items: ['OpenAI API', 'LangChain', 'OCR / Tesseract', 'Agentes IA', 'n8n', 'Prompt Engineering'],
   },
 ]

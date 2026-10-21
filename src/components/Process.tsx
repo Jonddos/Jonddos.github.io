@@ -1,5 +1,8 @@
-import { motion } from 'framer-motion'
-import { MessageSquare, Layers, Code2, Rocket } from 'lucide-react'
+import { m } from 'framer-motion'
+import { Code2, Layers, MessageSquare, Rocket } from 'lucide-react'
+import { fadeUp, revealViewport } from '../lib/motion'
+import { Container } from './ui/Container'
+import { Section, SectionHeader } from './ui/Section'
 
 const steps = [
   {
@@ -8,7 +11,6 @@ const steps = [
     title: 'Entiendo tu idea',
     description:
       'Conversamos sobre el problema real, el contexto del negocio y los usuarios. Sin tecnicismos innecesarios — solo claridad sobre qué necesita tu producto.',
-    color: '#3b82f6',
   },
   {
     number: '02',
@@ -16,7 +18,6 @@ const steps = [
     title: 'Diseño la solución',
     description:
       'Propongo la arquitectura, el stack y el alcance del proyecto. Definimos qué entra en el MVP y qué queda para después — para mover rápido sin acumular deuda.',
-    color: '#818cf8',
   },
   {
     number: '03',
@@ -24,7 +25,6 @@ const steps = [
     title: 'Desarrollo el producto',
     description:
       'Construyo con código limpio, revisiones continuas y actualizaciones de progreso. Ves avances reales desde la primera semana.',
-    color: '#06b6d4',
   },
   {
     number: '04',
@@ -32,79 +32,73 @@ const steps = [
     title: 'Entrego y optimizo',
     description:
       'Deploy en producción, documentación básica y soporte post-lanzamiento. El producto sale listo para usuarios reales, no solo para demos.',
-    color: '#10b981',
   },
 ]
 
 export default function Process() {
   return (
-    <section id="proceso" className="relative py-24 lg:py-32">
+    <Section id="proceso">
       <div
-        className="absolute inset-0 pointer-events-none"
-        style={{ background: 'radial-gradient(ellipse 60% 40% at 50% 50%, rgba(59,130,246,0.05) 0%, transparent 70%)' }}
+        aria-hidden="true"
+        className="pointer-events-none absolute top-1/3 left-1/2 -z-10 h-[30rem] w-[60rem] max-w-[200vw] -translate-x-1/2 opacity-50 blur-2xl bg-aurora"
       />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="mb-16 text-center"
-        >
-          <p className="section-label">// cómo trabajo</p>
-          <h2 className="section-title text-4xl md:text-5xl">
-            Mi{' '}
-            <span className="bg-clip-text text-transparent" style={{ backgroundImage: 'linear-gradient(135deg, #60a5fa, #818cf8)' }}>
-              proceso
-            </span>
-          </h2>
-          <p className="text-gray-500 max-w-lg mx-auto leading-relaxed">
-            De la idea al producto listo para usuarios — en pasos claros y sin sorpresas.
-          </p>
-        </motion.div>
+      <Container>
+        <SectionHeader
+          id="proceso"
+          eyebrow="cómo trabajo"
+          title="Mi"
+          highlight="proceso"
+          description="De la idea al producto listo para usuarios — en pasos claros y sin sorpresas."
+          align="center"
+        />
 
-        {/* Steps */}
-        <div className="relative grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {/* Connecting line (desktop) */}
-          <div className="hidden lg:block absolute top-10 left-[12.5%] right-[12.5%] h-px bg-gradient-to-r from-blue-500/10 via-blue-500/30 to-emerald-500/10 z-0" />
+        <div className="relative">
+          {/* Conector horizontal en desktop */}
+          <div
+            aria-hidden="true"
+            className="absolute top-7 right-[12.5%] left-[12.5%] hidden h-px bg-linear-to-r from-transparent via-accent-border to-transparent lg:block"
+          />
 
-          {steps.map((step, i) => {
-            const Icon = step.icon
-            return (
-              <motion.div
-                key={step.number}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: '-40px' }}
-                transition={{ delay: i * 0.12, duration: 0.5 }}
-                className="relative z-10 flex flex-col items-center text-center"
-              >
-                {/* Icon circle */}
-                <div
-                  className="w-20 h-20 rounded-2xl flex items-center justify-center mb-5 relative"
-                  style={{
-                    background: `linear-gradient(135deg, ${step.color}20, ${step.color}08)`,
-                    border: `1px solid ${step.color}30`,
-                    boxShadow: `0 0 20px ${step.color}15`,
-                  }}
+          <ol className="relative grid gap-10 md:grid-cols-2 md:gap-x-8 md:gap-y-12 lg:grid-cols-4 lg:gap-6">
+            {steps.map((step, i) => {
+              const Icon = step.icon
+              return (
+                <m.li
+                  key={step.number}
+                  variants={fadeUp}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={revealViewport}
+                  custom={i * 0.1}
+                  className="relative flex gap-5 lg:flex-col lg:items-center lg:gap-0 lg:text-center"
                 >
-                  <Icon size={28} style={{ color: step.color }} />
-                  <span
-                    className="absolute -top-2 -right-2 font-mono text-xs font-bold px-1.5 py-0.5 rounded"
-                    style={{ background: step.color, color: '#fff', fontSize: '10px' }}
-                  >
-                    {step.number}
-                  </span>
-                </div>
-
-                <h3 className="font-bold text-white mb-2">{step.title}</h3>
-                <p className="text-sm text-gray-500 leading-relaxed max-w-xs">{step.description}</p>
-              </motion.div>
-            )
-          })}
+                  {/* Conector vertical en móvil */}
+                  {i < steps.length - 1 && (
+                    <span
+                      aria-hidden="true"
+                      className="absolute top-16 -bottom-8 left-7 w-px bg-linear-to-b from-accent-border to-transparent md:hidden"
+                    />
+                  )}
+                  <div className="relative grid size-14 shrink-0 place-items-center rounded-2xl border border-accent-border bg-surface text-accent-text shadow-card">
+                    <Icon aria-hidden="true" className="size-6" strokeWidth={1.75} />
+                    <span
+                      aria-hidden="true"
+                      className="absolute -top-2 -right-2 rounded-md bg-accent px-1.5 py-0.5 font-mono text-tag font-semibold text-accent-fg"
+                    >
+                      {step.number}
+                    </span>
+                  </div>
+                  <div>
+                    <h3 className="text-title text-fg lg:mt-6">{step.title}</h3>
+                    <p className="mt-2 text-body-sm text-fg-muted lg:mx-auto lg:max-w-xs">{step.description}</p>
+                  </div>
+                </m.li>
+              )
+            })}
+          </ol>
         </div>
-      </div>
-    </section>
+      </Container>
+    </Section>
   )
 }

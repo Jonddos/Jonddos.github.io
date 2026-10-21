@@ -1,134 +1,118 @@
-import { motion } from 'framer-motion'
+import { m } from 'framer-motion'
 import { ArrowRight, ChevronDown } from 'lucide-react'
+import { ease, fadeUp } from '../lib/motion'
+import HeroConsole from './HeroConsole'
+import { Badge } from './ui/Badge'
+import { ButtonLink } from './ui/Button'
+import { Container } from './ui/Container'
+import { Eyebrow } from './ui/Section'
 
 const chips = ['React', 'Next.js', 'Python', 'FastAPI', 'Docker', 'APIs']
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 30 },
-  visible: (i: number) => ({
-    opacity: 1,
-    y: 0,
-    transition: { delay: i * 0.12, duration: 0.65, ease: [0.22, 1, 0.36, 1] },
-  }),
+function Backdrop() {
+  return (
+    <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10">
+      <div className="absolute inset-0 bg-grid mask-fade-b" />
+      <div className="absolute -top-48 left-1/2 h-[40rem] w-[70rem] max-w-[200vw] -translate-x-1/2 blur-2xl bg-aurora" />
+      <div className="absolute -top-24 -right-40 h-[30rem] w-[40rem] blur-2xl bg-aurora-2" />
+      <div className="absolute inset-0 bg-noise opacity-70 mix-blend-soft-light" />
+    </div>
+  )
 }
 
 export default function Hero() {
   return (
-    <section className="relative min-h-screen flex flex-col justify-center overflow-hidden">
-      {/* Grid background */}
-      <div className="absolute inset-0 grid-bg opacity-50" />
+    <section
+      id="inicio"
+      aria-labelledby="inicio-title"
+      className="relative isolate flex min-h-dvh flex-col justify-center overflow-hidden pt-nav"
+    >
+      <Backdrop />
 
-      {/* Radial glow top */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background: 'radial-gradient(ellipse 90% 55% at 50% -5%, rgba(59, 130, 246, 0.13) 0%, transparent 65%)',
-        }}
-      />
-
-      {/* Corner accent lines */}
-      <div className="absolute top-0 left-0 w-px h-40 bg-gradient-to-b from-blue-500/50 to-transparent" />
-      <div className="absolute top-0 left-0 h-px w-40 bg-gradient-to-r from-blue-500/50 to-transparent" />
-      <div className="absolute top-0 right-0 w-px h-24 bg-gradient-to-b from-blue-500/20 to-transparent" />
-      <div className="absolute top-0 right-0 h-px w-24 bg-gradient-to-l from-blue-500/20 to-transparent" />
-
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-20">
-        <div className="max-w-4xl">
-          {/* Name microlabel */}
-          <motion.p
-            custom={0}
+      <Container className="grid items-center gap-16 py-16 sm:py-20 lg:grid-cols-[minmax(0,1fr)_minmax(0,28rem)] lg:gap-12 xl:grid-cols-[minmax(0,1fr)_minmax(0,30rem)] xl:gap-20">
+        <div className="max-w-3xl">
+          <m.div
             variants={fadeUp}
             initial="hidden"
             animate="visible"
-            className="font-mono text-blue-400/80 text-sm tracking-widest uppercase mb-4"
+            className="flex flex-wrap items-center gap-x-5 gap-y-3"
           >
-            // Jonathan Ortiz
-          </motion.p>
+            <Eyebrow>Jonathan Ortiz</Eyebrow>
+            <p className="inline-flex items-center gap-2 rounded-full border border-border bg-surface/70 px-3 py-1 text-tag text-fg-muted shadow-card backdrop-blur">
+              <span aria-hidden="true" className="relative flex size-2">
+                <span className="absolute inset-0 rounded-full bg-success motion-safe:animate-ping-soft" />
+                <span className="relative size-2 rounded-full bg-success" />
+              </span>
+              Disponible para nuevos proyectos
+            </p>
+          </m.div>
 
-          {/* Headline */}
-          <motion.h1
-            custom={1}
+          {/* Sin fundido de opacidad: el H1 es el LCP y debe pintarse en el primer frame */}
+          <m.h1
+            id="inicio-title"
+            initial={{ y: 18 }}
+            animate={{ y: 0 }}
+            transition={{ duration: 0.9, ease: ease.outExpo }}
+            className="mt-6 text-display text-fg"
+          >
+            Construyo software que ayuda a negocios a{' '}
+            <span className="text-gradient-brand">vender, automatizar y crecer.</span>
+          </m.h1>
+
+          <m.p
             variants={fadeUp}
             initial="hidden"
             animate="visible"
-            className="text-4xl sm:text-5xl md:text-6xl lg:text-[4.5rem] font-black leading-[1.03] tracking-tight mb-7"
+            custom={0.12}
+            className="mt-7 max-w-2xl text-lead text-fg-muted"
           >
-            <span className="text-white">Construyo software que ayuda a negocios a{' '}</span>
-            <span
-              className="bg-clip-text text-transparent"
-              style={{ backgroundImage: 'linear-gradient(135deg, #60a5fa 0%, #3b82f6 45%, #818cf8 100%)' }}
-            >
-              vender, automatizar y crecer.
-            </span>
-          </motion.h1>
+            Soy desarrollador full-stack. Creo plataformas web, dashboards, automatizaciones, integraciones y productos
+            con IA <span className="font-medium text-fg">listos para producción.</span>
+          </m.p>
 
-          {/* Subtitle */}
-          <motion.p
-            custom={2}
+          <m.div
             variants={fadeUp}
             initial="hidden"
             animate="visible"
-            className="text-base sm:text-lg text-gray-400 leading-relaxed mb-10 max-w-2xl"
+            custom={0.22}
+            className="mt-10 flex flex-col gap-3 sm:flex-row"
           >
-            Soy desarrollador full-stack. Creo plataformas web, dashboards, automatizaciones,
-            integraciones y productos con IA{' '}
-            <span className="text-gray-300">listos para producción.</span>
-          </motion.p>
-
-          {/* CTAs */}
-          <motion.div
-            custom={3}
-            variants={fadeUp}
-            initial="hidden"
-            animate="visible"
-            className="flex flex-col sm:flex-row gap-3 mb-12"
-          >
-            <a href="#contacto" className="btn-primary text-base px-7 py-3.5">
+            <ButtonLink href="#contacto" size="lg">
               Hablemos de tu proyecto
-              <ArrowRight size={17} />
-            </a>
-            <a href="#proyectos" className="btn-secondary text-base px-7 py-3.5">
+              <ArrowRight aria-hidden="true" className="size-4.5" />
+            </ButtonLink>
+            <ButtonLink href="#proyectos" size="lg" variant="secondary">
               Ver proyectos
-            </a>
-          </motion.div>
+            </ButtonLink>
+          </m.div>
 
-          {/* Tech chips */}
-          <motion.div
-            custom={4}
+          <m.ul
+            aria-label="Tecnologías principales"
             variants={fadeUp}
             initial="hidden"
             animate="visible"
-            className="flex flex-wrap gap-2"
+            custom={0.32}
+            className="mt-12 flex flex-wrap gap-2"
           >
             {chips.map((chip) => (
-              <span
-                key={chip}
-                className="font-mono text-xs text-gray-500 border border-white/8 bg-white/2 rounded-md px-3 py-1.5 hover:border-blue-500/40 hover:text-blue-300 transition-all duration-200"
-              >
-                {chip}
-              </span>
+              <li key={chip}>
+                <Badge size="md" shape="tag">
+                  {chip}
+                </Badge>
+              </li>
             ))}
-          </motion.div>
+          </m.ul>
         </div>
 
+        <HeroConsole className="hidden lg:block" />
+      </Container>
 
-
-      </div>
-
-      {/* Scroll indicator */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.3 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 text-gray-700"
+      <div
+        aria-hidden="true"
+        className="absolute bottom-6 left-1/2 hidden -translate-x-1/2 text-fg-subtle motion-safe:animate-float md:block"
       >
-        <motion.div
-          animate={{ y: [0, 6, 0] }}
-          transition={{ repeat: Infinity, duration: 2.2, ease: 'easeInOut' }}
-        >
-          <ChevronDown size={18} />
-        </motion.div>
-      </motion.div>
+        <ChevronDown className="size-5" />
+      </div>
     </section>
   )
 }
