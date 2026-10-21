@@ -6,7 +6,7 @@ Sitio personal de **Jonathan Ortiz**, desarrollador full-stack, y de su marca **
 
 ## Stack
 
-- **React 19** + **TypeScript** (strict) + **Vite 7**
+- **React 18** + **TypeScript** (strict) + **Vite 7**
 - **Tailwind CSS 4** con un design system propio de tokens OKLCH ([guía](docs/design-system.md))
 - **Motion** (`motion/react`, `LazyMotion` + `reducedMotion="user"`) y **lucide-react** 1.x (los logotipos de GitHub y LinkedIn son SVG propios)
 - Fuentes autoalojadas: Inter Variable y JetBrains Mono Variable

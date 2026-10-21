@@ -11,7 +11,9 @@ Objetivo: presentar proyectos, servicios y proceso, y convertir visitas en conta
 
 ## Stack
 
-- React 19 + TypeScript 5 (strict) + Vite 7. Node 22 (local y CI).
+- React 18 + TypeScript 5 (strict) + Vite 7. Node 22 (local y CI).
+  React 19 está evaluado y es compatible, pero suma ~23 kB gzip de JS sin aportar nada a esta SPA sin SSR: subirlo
+  cuando una dependencia lo exija o se adopte prerender.
 - Tailwind CSS 4 con design system propio: tokens en `src/styles/tokens.css`, guía en `docs/design-system.md`.
 - Motion 14 (`motion/react`) con `LazyMotion strict` (usar `m.*`, nunca `motion.*`).
 - Iconos: lucide-react 1.x, que ya no incluye marcas: los logotipos de GitHub y LinkedIn están en `components/ui/BrandMarks.tsx`.
