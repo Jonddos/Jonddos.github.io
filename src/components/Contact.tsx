@@ -17,7 +17,7 @@ const announcements: Record<CopyStatus, string> = {
 
 export default function Contact() {
   const [status, setStatus] = useState<CopyStatus>('idle')
-  const resetTimer = useRef<number>()
+  const resetTimer = useRef<number>(undefined)
 
   useEffect(() => () => window.clearTimeout(resetTimer.current), [])
 
