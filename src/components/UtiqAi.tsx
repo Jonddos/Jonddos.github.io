@@ -1,144 +1,132 @@
-import { motion } from 'framer-motion'
+import type { ReactNode } from 'react'
+import { m, useReducedMotion, type Variants } from 'framer-motion'
+import { revealViewport } from '../lib/motion'
+import { Badge } from './ui/Badge'
+import { Container } from './ui/Container'
+import { UtiqAiMark } from './ui/Logo'
+import { Reveal } from './ui/Reveal'
+import { Eyebrow, Section } from './ui/Section'
+import { TerminalWindow } from './ui/TerminalWindow'
 
 const tags = ['SaaS', 'Automatización', 'Dashboards', 'IA Aplicada', 'Integraciones', 'MVPs']
 
-export default function UtiqAi() {
+const checks = [
+  'SaaS architecture ready',
+  'AI pipelines configured',
+  'Dashboards & analytics set',
+  'Integrations wired',
+]
+
+// Las líneas de la terminal aparecen en secuencia, como si se escribieran
+const sequence: Variants = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.28, delayChildren: 0.2 } },
+}
+
+const line: Variants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { duration: 0.2 } },
+}
+
+function Prompt({ children }: { children: ReactNode }) {
   return (
-    <section id="utiqai" className="relative py-24 lg:py-28 overflow-hidden">
-      {/* Top separator */}
+    <m.p variants={line} className="flex items-start gap-2">
+      <span aria-hidden="true" className="text-syntax-keyword">
+        ❯
+      </span>
+      {children}
+    </m.p>
+  )
+}
+
+export default function UtiqAi() {
+  const reduceMotion = useReducedMotion()
+
+  return (
+    <Section id="utiqai" divider className="overflow-hidden">
       <div
-        className="absolute top-0 inset-x-0 h-px"
-        style={{ background: 'linear-gradient(90deg, transparent, rgba(59,130,246,0.2), transparent)' }}
+        aria-hidden="true"
+        className="pointer-events-none absolute top-1/2 -right-48 -z-10 h-[34rem] w-[44rem] -translate-y-1/2 blur-2xl bg-aurora-2"
       />
 
-      {/* Background glow */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{ background: 'radial-gradient(ellipse 70% 50% at 50% 50%, rgba(59,130,246,0.06) 0%, transparent 70%)' }}
-      />
+      <Container className="grid items-center gap-14 lg:grid-cols-2 lg:gap-20">
+        <Reveal>
+          <Eyebrow>mi marca</Eyebrow>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          {/* Left: brand info */}
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          >
-            <p className="font-mono text-xs text-blue-400/60 tracking-widest uppercase mb-4">// mi marca</p>
-
-            {/* Wordmark */}
-            <div className="flex items-center gap-3 mb-6">
-              <div
-                className="w-12 h-12 rounded-xl flex items-center justify-center font-mono font-black text-xl"
-                style={{
-                  background: 'linear-gradient(135deg, rgba(59,130,246,0.2), rgba(59,130,246,0.08))',
-                  border: '1px solid rgba(59,130,246,0.3)',
-                  color: '#60a5fa',
-                  boxShadow: '0 0 24px rgba(59,130,246,0.15)',
-                }}
-              >
-                U
-              </div>
-              <div>
-                <div className="text-2xl font-black font-mono text-white">
-                  Utiq<span className="text-blue-400">Ai</span>
-                </div>
-                <div className="text-xs text-gray-600 font-mono">software con enfoque en producto</div>
-              </div>
+          <div className="mt-6 flex items-center gap-4">
+            <UtiqAiMark className="size-12" />
+            <div>
+              <p className="font-mono text-title-lg font-bold text-fg">
+                Utiq<span className="text-gradient-brand">Ai</span>
+              </p>
+              <p className="font-mono text-tag text-fg-subtle">Software Studio</p>
             </div>
+          </div>
 
-            <h2 className="text-3xl md:text-4xl font-black text-white mb-5 leading-tight">
-              UtiqAi — software con{' '}
-              <span
-                className="bg-clip-text text-transparent"
-                style={{ backgroundImage: 'linear-gradient(135deg, #60a5fa, #818cf8)' }}
-              >
-                enfoque en producto
-              </span>
-            </h2>
+          <h2 id="utiqai-title" className="mt-8 text-headline text-fg">
+            UtiqAi — software con <span className="text-accent-text">enfoque en producto</span>
+          </h2>
+          <p className="mt-6 text-body text-fg-muted">
+            UtiqAi es mi marca para crear soluciones digitales enfocadas en negocios: SaaS, automatizaciones,
+            dashboards, integraciones e inteligencia artificial aplicada.
+          </p>
+          <p className="mt-4 text-body text-fg-subtle">
+            La idea es simple: construir herramientas útiles, medibles y listas para usarse en producción — sin
+            bloatware, sin prototipos eternos.
+          </p>
 
-            <p className="text-gray-400 leading-relaxed text-sm mb-6 max-w-lg">
-              UtiqAi es mi marca para crear soluciones digitales enfocadas en negocios: SaaS, automatizaciones, dashboards, integraciones e inteligencia artificial aplicada.
-            </p>
-            <p className="text-gray-500 leading-relaxed text-sm max-w-lg">
-              La idea es simple: construir herramientas útiles, medibles y listas para usarse en producción — sin bloatware, sin prototipos eternos.
-            </p>
-
-            {/* Tags */}
-            <div className="flex flex-wrap gap-2 mt-7">
-              {tags.map((tag) => (
-                <span
-                  key={tag}
-                  className="font-mono text-xs text-blue-400/70 border border-blue-500/20 bg-blue-500/5 rounded-full px-3 py-1"
-                >
+          <ul aria-label="Áreas de trabajo de UtiqAi" className="mt-8 flex flex-wrap gap-2">
+            {tags.map((tag) => (
+              <li key={tag}>
+                <Badge variant="accent" size="md">
                   {tag}
-                </span>
-              ))}
-            </div>
-          </motion.div>
+                </Badge>
+              </li>
+            ))}
+          </ul>
+        </Reveal>
 
-          {/* Right: terminal card */}
-          <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
-          >
-            <div
-              className="rounded-2xl overflow-hidden"
-              style={{
-                background: 'linear-gradient(145deg, #0d1526 0%, #080d1a 100%)',
-                border: '1px solid rgba(59,130,246,0.15)',
-                boxShadow: '0 4px 40px rgba(0,0,0,0.6), 0 0 60px rgba(59,130,246,0.05)',
-              }}
+        <Reveal delay={0.12}>
+          <TerminalWindow title="~/utiqai">
+            <m.div
+              lang="en"
+              variants={sequence}
+              initial={reduceMotion ? 'visible' : 'hidden'}
+              whileInView="visible"
+              viewport={revealViewport}
+              className="space-y-3"
             >
-              {/* Terminal top bar */}
-              <div className="flex items-center justify-between px-4 py-3 border-b border-white/5">
-                <div className="flex items-center gap-2">
-                  <span className="w-2.5 h-2.5 rounded-full bg-red-500/50" />
-                  <span className="w-2.5 h-2.5 rounded-full bg-yellow-500/50" />
-                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-500/50" />
-                </div>
-                <span className="font-mono text-xs text-gray-600">~/utiqai</span>
-                <div className="w-16" />
+              <Prompt>whoami</Prompt>
+              <m.p variants={line} className="pl-5 text-code-fg">
+                UtiqAi · Software Studio · Jonathan Ortiz
+              </m.p>
+              <Prompt>
+                <span>
+                  build <span className="whitespace-nowrap text-syntax-property">--for-business</span>{' '}
+                  <span className="whitespace-nowrap text-syntax-literal">--ready-for-prod</span>
+                </span>
+              </Prompt>
+              <div className="space-y-1.5 pl-5 text-caption">
+                {checks.map((check) => (
+                  <m.p key={check} variants={line}>
+                    <span className="text-syntax-literal">✓</span> <span className="text-code-muted">{check}</span>
+                  </m.p>
+                ))}
+                <m.p variants={line}>
+                  <span className="text-syntax-keyword">→</span>{' '}
+                  <span className="text-code-muted">Deploying to production...</span>
+                </m.p>
               </div>
-
-              {/* Terminal body */}
-              <div className="p-6 font-mono text-sm space-y-3">
-                <div className="flex items-center gap-2 text-gray-500">
-                  <span className="text-blue-400">❯</span>
-                  <span className="text-gray-400">whoami</span>
-                </div>
-                <div className="text-gray-300 pl-4">UtiqAi · Software Studio · Jonathan Ortiz</div>
-
-                <div className="flex items-center gap-2 text-gray-500 pt-1">
-                  <span className="text-blue-400">❯</span>
-                  <span className="text-gray-400">build <span className="text-blue-300">--for-business</span> <span className="text-emerald-400">--ready-for-prod</span></span>
-                </div>
-
-                <div className="pl-4 space-y-1 text-xs">
-                  <div className="text-emerald-400">✓ <span className="text-gray-400">SaaS architecture ready</span></div>
-                  <div className="text-emerald-400">✓ <span className="text-gray-400">AI pipelines configured</span></div>
-                  <div className="text-emerald-400">✓ <span className="text-gray-400">Dashboards & analytics set</span></div>
-                  <div className="text-emerald-400">✓ <span className="text-gray-400">Integrations wired</span></div>
-                  <div className="text-blue-400">→ <span className="text-gray-400">Deploying to production...</span></div>
-                </div>
-
-                <div className="pt-2 flex items-center gap-2">
-                  <span className="text-blue-400">❯</span>
-                  <motion.span
-                    animate={{ opacity: [1, 0, 1] }}
-                    transition={{ repeat: Infinity, duration: 1.1 }}
-                    className="inline-block w-1.5 h-4 bg-blue-400"
-                  />
-                </div>
-              </div>
-            </div>
-          </motion.div>
-        </div>
-      </div>
-    </section>
+              <m.p variants={line} className="flex items-center gap-2">
+                <span aria-hidden="true" className="text-syntax-keyword">
+                  ❯
+                </span>
+                <span aria-hidden="true" className="inline-block h-4 w-2 bg-syntax-keyword motion-safe:animate-blink" />
+              </m.p>
+            </m.div>
+          </TerminalWindow>
+        </Reveal>
+      </Container>
+    </Section>
   )
 }

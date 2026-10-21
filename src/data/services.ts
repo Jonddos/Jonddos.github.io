@@ -6,6 +6,8 @@ export interface Service {
   title: string
   description: string
   features: string[]
+  /** Ocupa dos columnas en el bento. */
+  featured?: boolean
 }
 
 export const services: Service[] = [
@@ -20,6 +22,7 @@ export const services: Service[] = [
     title: 'Creación de SaaS',
     description: 'Productos de software como servicio listos para escalar, con auth, billing y multi-tenant.',
     features: ['Multi-tenancy', 'Suscripciones y pagos', 'Onboarding automatizado'],
+    featured: true,
   },
   {
     icon: BarChart3,
@@ -32,6 +35,7 @@ export const services: Service[] = [
     title: 'Automatizaciones con IA',
     description: 'Flujos inteligentes que eliminan tareas repetitivas y aumentan la productividad de tu equipo.',
     features: ['Procesamiento de documentos', 'Agentes IA', 'Integración LLMs'],
+    featured: true,
   },
   {
     icon: Globe,

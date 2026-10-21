@@ -1,48 +1,69 @@
-import { motion } from 'framer-motion'
+import { m } from 'framer-motion'
 import { projects } from '../data/projects'
+import { cn } from '../lib/cn'
+import { fadeUp, revealViewport, stagger } from '../lib/motion'
 import ProjectCard from './ProjectCard'
+import { Container } from './ui/Container'
+import { Section, SectionHeader } from './ui/Section'
 
 const featured = projects.slice(0, 2)
 const rest = projects.slice(2)
 
+/**
+ * Bento de 6 columnas en desktop: filas de 3 tarjetas; si al final sobran 2 ocupan media fila
+ * cada una y si sobra 1 ocupa la fila completa. En tablet (2 columnas) la última impar se ensancha.
+ */
+function spanFor(index: number, total: number) {
+  const remainder = total % 3
+  const inLastRow = remainder !== 0 && index >= total - remainder
+  const desktop = !inLastRow ? 'lg:col-span-2' : remainder === 2 ? 'lg:col-span-3' : 'lg:col-span-6'
+  const tablet = total % 2 === 1 && index === total - 1 ? 'md:col-span-2' : undefined
+  return cn(tablet, desktop)
+}
+
 export default function Projects() {
   return (
-    <section id="proyectos" className="relative py-24 lg:py-32">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.55 }}
-          className="mb-14"
-        >
-          <p className="section-label">// proyectos</p>
-          <h2 className="text-4xl md:text-5xl font-black text-white mb-4">
-            Casos de{' '}
-            <span className="bg-clip-text text-transparent" style={{ backgroundImage: 'linear-gradient(135deg, #60a5fa, #818cf8)' }}>
-              estudio
-            </span>
-          </h2>
-          <p className="text-gray-500 max-w-lg leading-relaxed text-sm">
-            Proyectos reales con problemas concretos y resultados medibles — no demos de tutorial.
-          </p>
-        </motion.div>
+    <Section id="proyectos" divider>
+      <Container>
+        <SectionHeader
+          id="proyectos"
+          eyebrow="proyectos"
+          title="Casos de"
+          highlight="estudio"
+          description="Proyectos reales con problemas concretos y resultados medibles — no demos de tutorial."
+        />
 
-        {/* Featured — 2 columns, larger */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <ul className="grid gap-5 md:grid-cols-2">
           {featured.map((project, i) => (
-            <ProjectCard key={project.id} project={project} index={i} featured />
+            <m.li
+              key={project.id}
+              variants={fadeUp}
+              initial="hidden"
+              whileInView="visible"
+              viewport={revealViewport}
+              custom={i * stagger}
+            >
+              <ProjectCard project={project} featured />
+            </m.li>
           ))}
-        </div>
+        </ul>
 
-        {/* Rest — 4-column compact grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <ul className="mt-5 grid gap-5 md:grid-cols-2 lg:grid-cols-6">
           {rest.map((project, i) => (
-            <ProjectCard key={project.id} project={project} index={i} />
+            <m.li
+              key={project.id}
+              variants={fadeUp}
+              initial="hidden"
+              whileInView="visible"
+              viewport={revealViewport}
+              custom={(i % 3) * stagger}
+              className={spanFor(i, rest.length)}
+            >
+              <ProjectCard project={project} />
+            </m.li>
           ))}
-        </div>
-      </div>
-    </section>
+        </ul>
+      </Container>
+    </Section>
   )
 }

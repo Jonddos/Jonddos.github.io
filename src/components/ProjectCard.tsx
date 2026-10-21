@@ -1,181 +1,92 @@
-import { motion } from 'framer-motion'
-import { Github, ExternalLink, AlertCircle, CheckCircle2, Lock } from 'lucide-react'
+import { CircleAlert, CircleCheck, ExternalLink, Github, Lock } from 'lucide-react'
 import type { Project } from '../data/projects'
-
-const typeColorMap: Record<string, string> = {
-  purple: 'text-purple-400 bg-purple-500/10 border-purple-500/25',
-  green: 'text-emerald-400 bg-emerald-500/10 border-emerald-500/25',
-  blue: 'text-blue-400 bg-blue-500/10 border-blue-500/25',
-  orange: 'text-orange-400 bg-orange-500/10 border-orange-500/25',
-  cyan: 'text-cyan-400 bg-cyan-500/10 border-cyan-500/25',
-  pink: 'text-pink-400 bg-pink-500/10 border-pink-500/25',
-  teal: 'text-teal-400 bg-teal-500/10 border-teal-500/25',
-}
+import { cn } from '../lib/cn'
+import ProjectPreview from './ProjectPreview'
+import { Badge } from './ui/Badge'
+import { ButtonLink } from './ui/Button'
+import { Card } from './ui/Card'
 
 interface Props {
   project: Project
-  index: number
   featured?: boolean
 }
 
-export default function ProjectCard({ project, index, featured = false }: Props) {
-  const badgeClass = typeColorMap[project.typeColor] ?? typeColorMap.blue
+export default function ProjectCard({ project, featured = false }: Props) {
+  const titleId = `proyecto-${project.id}`
+  const { github, demo } = project.links ?? {}
 
   return (
-    <motion.article
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-50px' }}
-      transition={{ delay: index * 0.07, duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-      whileHover={{ y: -5 }}
-      className="group relative flex flex-col overflow-hidden transition-all duration-300"
-      style={{
-        background: 'linear-gradient(145deg, #0d1526 0%, #080d1a 100%)',
-        border: '1px solid rgba(255,255,255,0.06)',
-        borderRadius: '16px',
-        boxShadow: '0 4px 32px rgba(0,0,0,0.5)',
-      }}
+    <Card
+      as="article"
+      interactive
+      spotlight
+      data-accent={project.accent}
+      aria-labelledby={titleId}
+      className="flex h-full flex-col overflow-hidden [--spot:var(--project)]"
     >
-      {/* Top color bar */}
-      <div
-        className="h-[2px] w-full transition-opacity duration-300 opacity-50 group-hover:opacity-100"
-        style={{ background: `linear-gradient(90deg, ${project.accentColor}, transparent 70%)` }}
-      />
+      <ProjectPreview kind={project.preview} featured={featured} />
 
-      {/* Preview area */}
-      <div
-        className="relative overflow-hidden flex items-center justify-center"
-        style={{
-          height: featured ? '200px' : '160px',
-          background: `linear-gradient(145deg, ${project.accentColor}12 0%, #080d1a 100%)`,
-        }}
-      >
-        <div
-          className="absolute inset-0"
-          style={{
-            backgroundImage: `linear-gradient(${project.accentColor}18 1px, transparent 1px), linear-gradient(90deg, ${project.accentColor}18 1px, transparent 1px)`,
-            backgroundSize: '28px 28px',
-          }}
-        />
-        <div
-          className="absolute rounded-full blur-3xl opacity-20 group-hover:opacity-30 transition-opacity duration-500"
-          style={{
-            width: '120px', height: '120px',
-            background: project.accentColor,
-            top: '50%', left: '50%',
-            transform: 'translate(-50%, -50%)',
-          }}
-        />
-        <div
-          className="relative z-10 flex items-center justify-center font-black font-mono transition-transform duration-300 group-hover:scale-105"
-          style={{
-            width: featured ? '72px' : '58px',
-            height: featured ? '72px' : '58px',
-            borderRadius: '14px',
-            fontSize: featured ? '22px' : '17px',
-            background: `linear-gradient(135deg, ${project.accentColor}25, ${project.accentColor}10)`,
-            border: `1px solid ${project.accentColor}35`,
-            color: project.accentColor,
-            boxShadow: `0 0 28px ${project.accentColor}28`,
-          }}
-        >
-          {project.title.slice(0, 2).toUpperCase()}
-        </div>
-
-        {/* Window dots */}
-        <div className="absolute top-3 left-4 flex gap-1.5">
-          <span className="w-2 h-2 rounded-full bg-white/8" />
-          <span className="w-2 h-2 rounded-full bg-white/8" />
-          <span className="w-2 h-2 rounded-full" style={{ background: `${project.accentColor}50` }} />
-        </div>
-
-        {/* Confidential badge OR Featured badge */}
-        {project.confidential ? (
-          <div className="absolute top-3 right-3 flex items-center gap-1 font-mono text-[10px] px-2 py-0.5 rounded-full border border-white/10 bg-white/5 text-gray-500">
-            <Lock size={9} />
-            Confidencial
-          </div>
-        ) : featured ? (
-          <div
-            className="absolute top-3 right-3 font-mono text-[10px] px-2 py-0.5 rounded-full border"
-            style={{ color: project.accentColor, borderColor: `${project.accentColor}40`, background: `${project.accentColor}10` }}
-          >
-            DESTACADO
-          </div>
-        ) : null}
-      </div>
-
-      {/* Body */}
-      <div className="flex flex-col gap-4 p-5 flex-1">
+      <div className="flex flex-1 flex-col gap-5 p-6">
         <div>
-          <span className={`inline-block font-mono text-[11px] border rounded-full px-2.5 py-0.5 mb-2 ${badgeClass}`}>
-            {project.type}
-          </span>
-          <h3 className={`font-bold text-white leading-snug ${featured ? 'text-xl' : 'text-base'}`}>
+          <div className="flex flex-wrap items-center gap-2">
+            <Badge variant="project">{project.type}</Badge>
+            {project.confidential && (
+              <Badge title="Código bajo acuerdo de confidencialidad">
+                <Lock aria-hidden="true" className="size-3" />
+                Confidencial
+              </Badge>
+            )}
+          </div>
+          <h3 id={titleId} className={cn('mt-3 text-fg', featured ? 'text-title-lg' : 'text-title')}>
             {project.title}
           </h3>
+          <p className="mt-2 text-body-sm text-fg-muted">{project.description}</p>
         </div>
 
-        <p className="text-sm text-gray-400 leading-relaxed">{project.description}</p>
-
-        <div className="h-px bg-white/5" />
-
-        <div className="space-y-2.5">
-          <div className="flex gap-2 text-sm">
-            <AlertCircle size={13} className="text-orange-400/80 shrink-0 mt-[3px]" />
-            <p className="text-gray-500 leading-relaxed">
-              <span className="text-orange-400/90 font-medium">Problema: </span>
-              {project.problem}
-            </p>
+        <dl className="grid gap-3 rounded-control border border-border-subtle bg-surface-sunken/60 p-4 text-body-sm">
+          <div>
+            <dt className="flex items-center gap-2 font-semibold text-warning">
+              <CircleAlert aria-hidden="true" className="size-4 shrink-0" />
+              Problema
+            </dt>
+            <dd className="mt-0.5 pl-6 text-fg-muted">{project.problem}</dd>
           </div>
-          <div className="flex gap-2 text-sm">
-            <CheckCircle2 size={13} className="text-emerald-400/80 shrink-0 mt-[3px]" />
-            <p className="text-gray-500 leading-relaxed">
-              <span className="text-emerald-400/90 font-medium">Resultado: </span>
-              {project.result}
-            </p>
+          <div>
+            <dt className="flex items-center gap-2 font-semibold text-success">
+              <CircleCheck aria-hidden="true" className="size-4 shrink-0" />
+              Resultado
+            </dt>
+            <dd className="mt-0.5 pl-6 text-fg-muted">{project.result}</dd>
           </div>
-        </div>
+        </dl>
 
-        {/* Tech + links */}
-        <div className="mt-auto pt-3 border-t border-white/5 flex items-center justify-between gap-2">
-          <div className="flex flex-wrap gap-1.5">
-            {project.tech.map((t) => (
-              <span key={t} className="font-mono text-[11px] text-gray-600 bg-white/3 border border-white/6 rounded px-2 py-0.5">
-                {t}
-              </span>
+        <div className="mt-auto flex flex-wrap items-end justify-between gap-4 border-t border-border-subtle pt-5">
+          <ul aria-label={`Tecnologías de ${project.title}`} className="flex flex-wrap gap-1.5">
+            {project.tech.map((tech) => (
+              <li key={tech}>
+                <Badge shape="tag">{tech}</Badge>
+              </li>
             ))}
-          </div>
+          </ul>
 
-          {/* Links — only shown if not confidential */}
-          {!project.confidential && (
-            <div className="flex gap-3 shrink-0">
-              {project.github && project.github !== '#' && (
-                <a
-                  href={project.github}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-gray-600 hover:text-white transition-colors"
-                  aria-label={`GitHub de ${project.title}`}
-                >
-                  <Github size={14} />
-                </a>
+          {(github || demo) && (
+            <div className="flex gap-2">
+              {github && (
+                <ButtonLink href={github} external variant="secondary" size="sm">
+                  <Github aria-hidden="true" className="size-4" />
+                  Código
+                </ButtonLink>
               )}
-              {project.demo && project.demo !== '#' && (
-                <a
-                  href={project.demo}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-gray-600 hover:text-blue-400 transition-colors"
-                  aria-label={`Demo de ${project.title}`}
-                >
-                  <ExternalLink size={14} />
-                </a>
+              {demo && (
+                <ButtonLink href={demo} external variant="secondary" size="sm">
+                  <ExternalLink aria-hidden="true" className="size-4" />
+                  Demo
+                </ButtonLink>
               )}
             </div>
           )}
         </div>
       </div>
-    </motion.article>
+    </Card>
   )
 }

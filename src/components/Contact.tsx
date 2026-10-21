@@ -1,80 +1,93 @@
-import { motion } from 'framer-motion'
-import { Mail, Linkedin, ArrowRight } from 'lucide-react'
+import { useEffect, useRef, useState } from 'react'
+import { ArrowRight, Check, Copy, Github, Linkedin, Mail } from 'lucide-react'
+import { site } from '../data/site'
+import { Button, ButtonLink } from './ui/Button'
+import { Container } from './ui/Container'
+import { Reveal } from './ui/Reveal'
+import { Eyebrow, Section } from './ui/Section'
+
+type CopyStatus = 'idle' | 'copied' | 'error'
+
+const announcements: Record<CopyStatus, string> = {
+  idle: '',
+  copied: 'Email copiado al portapapeles',
+  error: `No se pudo copiar. El email es ${site.email}`,
+}
 
 export default function Contact() {
+  const [status, setStatus] = useState<CopyStatus>('idle')
+  const resetTimer = useRef<number>()
+
+  useEffect(() => () => window.clearTimeout(resetTimer.current), [])
+
+  async function copyEmail() {
+    try {
+      await navigator.clipboard.writeText(site.email)
+      setStatus('copied')
+    } catch {
+      setStatus('error')
+    }
+    window.clearTimeout(resetTimer.current)
+    resetTimer.current = window.setTimeout(() => setStatus('idle'), 2500)
+  }
+
   return (
-    <section id="contacto" className="relative py-24 lg:py-32">
-      <div
-        className="absolute top-0 inset-x-0 h-px"
-        style={{ background: 'linear-gradient(90deg, transparent, rgba(59,130,246,0.35), transparent)' }}
-      />
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{ background: 'radial-gradient(ellipse 60% 55% at 50% 100%, rgba(59,130,246,0.08) 0%, transparent 70%)' }}
-      />
+    <Section id="contacto">
+      <Container>
+        <Reveal className="relative isolate overflow-hidden rounded-panel px-6 py-16 text-center shadow-raised border-gradient-brand sm:px-12 lg:py-24">
+          <div aria-hidden="true" className="absolute inset-0 -z-10 bg-grid mask-fade-b" />
+          <div
+            aria-hidden="true"
+            className="absolute -bottom-48 left-1/2 -z-10 h-96 w-[56rem] max-w-[200vw] -translate-x-1/2 blur-2xl bg-aurora"
+          />
 
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <motion.div
-          initial={{ opacity: 0, y: 28 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-        >
-          <p className="section-label">// hablemos</p>
-
-          <h2 className="text-4xl sm:text-5xl md:text-[3.5rem] font-black text-white mb-5 leading-[1.08]">
-            ¿Tienes una idea o necesitas{' '}
-            <span
-              className="bg-clip-text text-transparent"
-              style={{ backgroundImage: 'linear-gradient(135deg, #60a5fa, #818cf8)' }}
-            >
-              software para tu negocio?
-            </span>
+          <Eyebrow>hablemos</Eyebrow>
+          <h2 id="contacto-title" className="mx-auto mt-5 max-w-3xl text-headline text-fg">
+            ¿Tienes una idea o necesitas <span className="text-gradient-brand">software para tu negocio?</span>
           </h2>
-
-          <p className="text-gray-500 text-base mb-12 max-w-md mx-auto leading-relaxed">
+          <p className="mx-auto mt-5 max-w-md text-lead text-fg-muted">
             Hablemos y convirtamos tu idea en una solución real.
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <motion.a
-              href="mailto:jonddos@gmail.com"
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              className="btn-primary text-base px-8 py-4"
-            >
-              <Mail size={17} />
+          <div className="mt-10 flex flex-col items-stretch justify-center gap-3 sm:flex-row sm:items-center">
+            <ButtonLink href={`mailto:${site.email}`} size="lg">
+              <Mail aria-hidden="true" className="size-4.5" />
               Escríbeme un correo
-              <ArrowRight size={15} />
-            </motion.a>
-
-            <motion.a
-              href="https://linkedin.com/in/jonddos"
-              target="_blank"
-              rel="noopener noreferrer"
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              className="btn-secondary text-base px-8 py-4"
-            >
-              <Linkedin size={17} />
+              <ArrowRight aria-hidden="true" className="size-4" />
+            </ButtonLink>
+            <ButtonLink href={site.social.linkedin} external variant="secondary" size="lg">
+              <Linkedin aria-hidden="true" className="size-4.5" />
               LinkedIn
-            </motion.a>
+            </ButtonLink>
           </div>
 
-          {/* Signature */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.35 }}
-            className="mt-12"
-          >
-            <div className="font-mono text-xs text-gray-700">
-              Jonathan Ortiz · <span className="text-blue-400/40">UtiqAi</span>
-            </div>
-          </motion.div>
-        </motion.div>
-      </div>
-    </section>
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-x-2 gap-y-3 text-body-sm text-fg-muted">
+            <span className="font-mono">{site.email}</span>
+            <Button variant="ghost" size="sm" onClick={copyEmail}>
+              {status === 'copied' ? (
+                <Check aria-hidden="true" className="size-4 text-success" />
+              ) : (
+                <Copy aria-hidden="true" className="size-4" />
+              )}
+              {status === 'copied' ? 'Copiado' : 'Copiar email'}
+            </Button>
+            <span aria-hidden="true" className="hidden text-border-strong sm:inline">
+              ·
+            </span>
+            <ButtonLink href={site.social.github} external variant="ghost" size="sm">
+              <Github aria-hidden="true" className="size-4" />
+              GitHub
+            </ButtonLink>
+          </div>
+          <p role="status" className="sr-only">
+            {announcements[status]}
+          </p>
+
+          <p className="mt-10 font-mono text-tag text-fg-subtle">
+            {site.name} · <span className="text-accent-text">{site.brand}</span>
+          </p>
+        </Reveal>
+      </Container>
+    </Section>
   )
 }

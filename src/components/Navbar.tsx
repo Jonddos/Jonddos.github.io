@@ -1,112 +1,149 @@
-import { useState, useEffect } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { useEffect, useRef, useState } from 'react'
+import { AnimatePresence, m } from 'framer-motion'
 import { Menu, X } from 'lucide-react'
+import { navItems, sectionIds, site } from '../data/site'
+import { useActiveSection } from '../hooks/useActiveSection'
+import { useScrolled } from '../hooks/useScrolled'
+import { cn } from '../lib/cn'
+import { duration, ease } from '../lib/motion'
+import { ButtonLink } from './ui/Button'
+import { buttonStyles } from './ui/button-styles'
+import { Container } from './ui/Container'
+import { LogoMark } from './ui/Logo'
+import { ThemeToggle } from './ui/ThemeToggle'
 
-const links = [
-  { href: '#proyectos', label: 'Proyectos' },
-  { href: '#servicios', label: 'Servicios' },
-  { href: '#proceso', label: 'Proceso' },
-  { href: '#sobre-mi', label: 'Sobre mí' },
-]
+const DESKTOP_QUERY = '(min-width: 1024px)'
 
 export default function Navbar() {
-  const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
+  const scrolled = useScrolled()
+  const active = useActiveSection(sectionIds)
+  const menuButton = useRef<HTMLButtonElement>(null)
 
+  // Con el menú abierto: Escape lo cierra devolviendo el foco, y se cierra al pasar a desktop
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 40)
-    window.addEventListener('scroll', onScroll)
-    return () => window.removeEventListener('scroll', onScroll)
-  }, [])
+    if (!open) return
+
+    const desktop = window.matchMedia(DESKTOP_QUERY)
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key !== 'Escape') return
+      setOpen(false)
+      menuButton.current?.focus()
+    }
+    const onBreakpoint = () => {
+      if (desktop.matches) setOpen(false)
+    }
+
+    document.addEventListener('keydown', onKeyDown)
+    desktop.addEventListener('change', onBreakpoint)
+    return () => {
+      document.removeEventListener('keydown', onKeyDown)
+      desktop.removeEventListener('change', onBreakpoint)
+    }
+  }, [open])
+
+  const solid = scrolled || open
 
   return (
-    <motion.header
-      initial={{ y: -80, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.6, ease: 'easeOut' }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled
-          ? 'bg-dark-900/90 backdrop-blur-md border-b border-white/5 shadow-xl'
-          : 'bg-transparent'
-      }`}
+    <header
+      className={cn(
+        'fixed inset-x-0 top-0 z-50 border-b transition-[background-color,border-color] duration-300 ease-standard',
+        solid ? 'border-border-subtle bg-canvas/80 backdrop-blur-xl backdrop-saturate-150' : 'border-transparent',
+      )}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
-          {/* Logo */}
-          <a href="#" className="flex items-center gap-2.5 group">
-            <div className="w-8 h-8 rounded-lg bg-blue-600/20 border border-blue-500/30 flex items-center justify-center group-hover:bg-blue-600/30 transition-all duration-300">
-              <span className="font-mono font-bold text-sm text-blue-400">J</span>
-            </div>
-            <div className="flex flex-col leading-none">
-              <span className="font-semibold text-white text-[15px] tracking-tight">Jonathan Ortiz</span>
-              <span className="font-mono text-[10px] text-blue-400/70 tracking-wider">Full-stack Developer</span>
-            </div>
-          </a>
+      <Container className="flex h-nav items-center justify-between gap-4">
+        <a href="#inicio" className="group flex items-center gap-3 rounded-control">
+          <LogoMark className="size-8 transition-transform duration-300 ease-out-expo group-hover:-rotate-6" />
+          <span className="flex flex-col leading-none">
+            <span className="text-body-sm font-semibold tracking-tight text-fg">{site.name}</span>
+            <span className="mt-1 font-mono text-tag text-fg-subtle">{site.role}</span>
+          </span>
+        </a>
 
-          {/* Desktop nav */}
-          <nav className="hidden md:flex items-center gap-1">
-            {links.map((link) => (
-              <a
-                key={link.href}
-                href={link.href}
-                className="px-4 py-2 text-sm text-gray-400 hover:text-white transition-colors duration-200 rounded-lg hover:bg-white/5"
-              >
-                {link.label}
-              </a>
-            ))}
-          </nav>
+        <nav aria-label="Principal" className="hidden lg:block">
+          <ul className="flex items-center gap-1">
+            {navItems.map((item) => {
+              const current = active === item.id
+              return (
+                <li key={item.id}>
+                  <a
+                    href={`#${item.id}`}
+                    aria-current={current ? 'true' : undefined}
+                    className={cn(
+                      'relative block rounded-control px-3.5 py-2 text-body-sm transition-colors duration-200',
+                      current ? 'text-fg' : 'text-fg-muted hover:text-fg',
+                    )}
+                  >
+                    {item.label}
+                    <span
+                      aria-hidden="true"
+                      className={cn(
+                        'absolute inset-x-3.5 -bottom-0.5 h-0.5 rounded-full bg-accent-text transition-[opacity,scale] duration-300 ease-out-expo',
+                        current ? 'scale-x-100 opacity-100' : 'scale-x-50 opacity-0',
+                      )}
+                    />
+                  </a>
+                </li>
+              )
+            })}
+          </ul>
+        </nav>
 
-          {/* Right side */}
-          <div className="hidden md:flex items-center gap-3">
-            <span className="font-mono text-xs text-gray-600 border border-gray-700/50 rounded px-2 py-1">ES</span>
-            <a href="#contacto" className="btn-primary text-sm px-4 py-2">
+        <div className="flex items-center gap-1.5">
+          <ThemeToggle />
+          {/* Envoltorio: `hidden` en el propio botón competiría con su `inline-flex` base */}
+          <div className="ml-1 hidden sm:block">
+            <ButtonLink href="#contacto" size="sm">
               Hablemos
-            </a>
+            </ButtonLink>
           </div>
-
-          {/* Mobile menu button */}
           <button
-            onClick={() => setOpen(!open)}
-            className="md:hidden p-2 text-gray-400 hover:text-white transition-colors"
-            aria-label="Toggle menu"
+            ref={menuButton}
+            type="button"
+            aria-label="Menú"
+            aria-expanded={open}
+            aria-controls="menu-movil"
+            onClick={() => setOpen((value) => !value)}
+            className={buttonStyles({ variant: 'ghost', size: 'icon', className: 'lg:hidden' })}
           >
-            {open ? <X size={20} /> : <Menu size={20} />}
+            {open ? <X aria-hidden="true" className="size-5" /> : <Menu aria-hidden="true" className="size-5" />}
           </button>
         </div>
-      </div>
+      </Container>
 
-      {/* Mobile menu */}
       <AnimatePresence>
         {open && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.2 }}
-            className="md:hidden bg-dark-800/95 backdrop-blur-md border-b border-white/5"
+          <m.nav
+            id="menu-movil"
+            aria-label="Menú principal"
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8, transition: { duration: duration.fast } }}
+            transition={{ duration: duration.base, ease: ease.standard }}
+            className="border-t border-border-subtle lg:hidden"
           >
-            <div className="px-4 py-4 flex flex-col gap-1">
-              {links.map((link) => (
-                <a
-                  key={link.href}
-                  href={link.href}
-                  onClick={() => setOpen(false)}
-                  className="px-4 py-3 text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition-all duration-200"
-                >
-                  {link.label}
-                </a>
-              ))}
-              <a
-                href="#contacto"
-                onClick={() => setOpen(false)}
-                className="btn-primary mt-2 justify-center text-sm"
-              >
+            <Container className="pt-3 pb-5">
+              <ul className="flex flex-col gap-1">
+                {navItems.map((item) => (
+                  <li key={item.id}>
+                    <a
+                      href={`#${item.id}`}
+                      onClick={() => setOpen(false)}
+                      aria-current={active === item.id ? 'true' : undefined}
+                      className="flex h-12 items-center rounded-control px-3 text-body text-fg-muted transition-colors hover:bg-surface-raised hover:text-fg aria-[current]:bg-surface-raised aria-[current]:text-fg"
+                    >
+                      {item.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+              <ButtonLink href="#contacto" onClick={() => setOpen(false)} className="mt-3 w-full sm:hidden">
                 Hablemos
-              </a>
-            </div>
-          </motion.div>
+              </ButtonLink>
+            </Container>
+          </m.nav>
         )}
       </AnimatePresence>
-    </motion.header>
+    </header>
   )
 }
