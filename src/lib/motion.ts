@@ -1,4 +1,4 @@
-import type { Transition, Variants } from 'framer-motion'
+import type { Transition, Variants } from 'motion/react'
 
 // Espejo en JS de los tokens de movimiento de src/styles/tokens.css
 export const ease = {

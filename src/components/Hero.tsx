@@ -1,4 +1,4 @@
-import { m } from 'framer-motion'
+import { m } from 'motion/react'
 import { ArrowRight, ChevronDown } from 'lucide-react'
 import { ease, fadeUp } from '../lib/motion'
 import HeroConsole from './HeroConsole'

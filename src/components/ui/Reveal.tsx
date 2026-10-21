@@ -1,4 +1,4 @@
-import { m, type HTMLMotionProps } from 'framer-motion'
+import { m, type HTMLMotionProps } from 'motion/react'
 import { fadeUp, revealViewport } from '../../lib/motion'
 
 interface RevealProps extends HTMLMotionProps<'div'> {

@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import { m, useReducedMotion, type Variants } from 'framer-motion'
+import { m, useReducedMotion, type Variants } from 'motion/react'
 import { revealViewport } from '../lib/motion'
 import { Badge } from './ui/Badge'
 import { Container } from './ui/Container'

@@ -1,4 +1,4 @@
-import { m } from 'framer-motion'
+import { m } from 'motion/react'
 import { technologies } from '../data/technologies'
 import { fadeUp, revealViewport, stagger } from '../lib/motion'
 import { Badge } from './ui/Badge'

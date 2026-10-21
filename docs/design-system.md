@@ -53,7 +53,7 @@ Fuentes: **Inter Variable** (UI) y **JetBrains Mono Variable** (código y etique
 
 ### Movimiento
 
-- Easings: `ease-standard` (M3), `ease-emphasized` y `ease-out-expo`, con espejo en [`src/lib/motion.ts`](../src/lib/motion.ts) para Framer Motion.
+- Easings: `ease-standard` (M3), `ease-emphasized` y `ease-out-expo`, con espejo en [`src/lib/motion.ts`](../src/lib/motion.ts) para Motion (`motion/react`).
 - Duraciones: 150 ms (micro), 250 ms (estado), 400–700 ms (entrada de bloques). Las salidas son más cortas que las entradas.
 - `MotionConfig reducedMotion="user"` + CSS `prefers-reduced-motion`: con movimiento reducido no hay desplazamientos ni bucles.
 - El H1 del hero no se desvanece: es el LCP y se pinta en el primer frame.

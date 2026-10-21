@@ -1,4 +1,4 @@
-import { m } from 'framer-motion'
+import { m } from 'motion/react'
 import { ArrowRight, Check } from 'lucide-react'
 import { services } from '../data/services'
 import { cn } from '../lib/cn'

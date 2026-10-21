@@ -1,4 +1,4 @@
-import { m } from 'framer-motion'
+import { m } from 'motion/react'
 import { Code2, Layers, MessageSquare, Rocket } from 'lucide-react'
 import { fadeUp, revealViewport } from '../lib/motion'
 import { Container } from './ui/Container'

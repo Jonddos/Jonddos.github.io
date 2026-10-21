@@ -1,7 +1,7 @@
 import { cleanup } from '@testing-library/react'
 import { afterEach } from 'vitest'
 
-// jsdom no implementa estas APIs del navegador que usan Framer Motion y los hooks del sitio
+// jsdom no implementa estas APIs del navegador que usan Motion y los hooks del sitio
 class IntersectionObserverMock implements IntersectionObserver {
   readonly root = null
   readonly rootMargin = ''
