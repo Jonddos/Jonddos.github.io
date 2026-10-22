@@ -63,7 +63,7 @@ scripts/             # render-assets.mjs + plantillas en scripts/assets/
 ## Criterio de terminado y QA
 
 - Cambios de contenido: `npm run check` + revisión visual de la sección.
-- Cambios visuales o de layout: `npm run check` + `npm run build` + revisión en 375, 768 y 1280 px, **en ambos temas**.
+- Cambios visuales o de layout: `npm run check` + `npm run build` + revisión en 375, 768, 1024 y 1280 px, **en ambos temas**.
 - Cambios de dependencias, CI o transversales: QA completa (todo lo anterior + `npm run preview`).
 
 ## Mapa documental
