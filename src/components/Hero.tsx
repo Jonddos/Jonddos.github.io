@@ -29,7 +29,8 @@ export default function Hero() {
     >
       <Backdrop />
 
-      <Container className="grid items-center gap-16 py-16 sm:py-20 lg:grid-cols-[minmax(0,1fr)_minmax(0,28rem)] lg:gap-12 xl:grid-cols-[minmax(0,1fr)_minmax(0,30rem)] xl:gap-20">
+      {/* Dos columnas solo desde xl: entre 1024 y 1279 px la consola dejaba el H1 en ~450 px y 7 líneas */}
+      <Container className="grid items-center gap-16 py-16 sm:py-20 xl:grid-cols-[minmax(0,1fr)_minmax(0,30rem)] xl:gap-20">
         <div className="max-w-3xl">
           <m.div
             variants={fadeUp}
@@ -104,7 +105,7 @@ export default function Hero() {
           </m.ul>
         </div>
 
-        <HeroConsole className="hidden lg:block" />
+        <HeroConsole className="hidden xl:block" />
       </Container>
 
       <div
