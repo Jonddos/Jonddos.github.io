@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { AnimatePresence, m } from 'framer-motion'
+import { AnimatePresence, m } from 'motion/react'
 import { Menu, X } from 'lucide-react'
 import { navItems, sectionIds, site } from '../data/site'
 import { useActiveSection } from '../hooks/useActiveSection'

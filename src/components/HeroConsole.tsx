@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import { m } from 'framer-motion'
+import { m } from 'motion/react'
 import { Check, MessageSquareText, TrendingUp, Workflow, type LucideIcon } from 'lucide-react'
 import { cn } from '../lib/cn'
 import { ease } from '../lib/motion'

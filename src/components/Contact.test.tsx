@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { LazyMotion, domAnimation } from 'framer-motion'
+import { LazyMotion, domAnimation } from 'motion/react'
 import { describe, expect, it, vi } from 'vitest'
 import { site } from '../data/site'
 import Contact from './Contact'

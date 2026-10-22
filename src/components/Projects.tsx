@@ -1,4 +1,4 @@
-import { m } from 'framer-motion'
+import { m } from 'motion/react'
 import { projects } from '../data/projects'
 import { cn } from '../lib/cn'
 import { fadeUp, revealViewport, stagger } from '../lib/motion'
